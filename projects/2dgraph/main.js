@@ -25,6 +25,7 @@ let magnification = 1;
 
 canvas.onwheel = e => {
     const delta = Math.sign(e.deltaY);
+    console.log(e.deltaY);
     magnification += delta * 0.1;
     drawGrid(magnification);
 }
