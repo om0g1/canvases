@@ -5,6 +5,8 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 function drawGrid() {
+    // pen.fillStyle = "white";
+    // pen.fillRect(0, 0, canvas.width, canvas.height);
     pen.clearRect(0, 0, canvas.width, canvas.height);
 
     pen.beginPath();

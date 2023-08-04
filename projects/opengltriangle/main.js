@@ -4,65 +4,29 @@ const pen = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-function drawGrid(magnification){
-    pen.clearRect(0, 0, canvas.width, canvas.height);
+function drawTriangle(){
+    const vertices = [
+        { x: canvas.width /2 , y: canvas.height * 0.1 },  // Top vertex
+        { x: canvas.width * 0.3, y: canvas.height * 0.9 },  // Bottom-left vertex
+        { x: canvas.width * 0.7, y: canvas.height * 0.9 } // Bottom-right vertex
+      ];
+  
+      // Create a gradient
+      const gradient = pen.createLinearGradient(vertices[0].x, vertices[0].y, vertices[2].x, vertices[2].y);
+      gradient.addColorStop(0, "red");
+      gradient.addColorStop(0.5, "green");
+      gradient.addColorStop(1, "blue");
+  
+      // Begin drawing the path
+      pen.beginPath();
+      pen.moveTo(vertices[0].x, vertices[0].y);  // Move to the top vertex
+      pen.lineTo(vertices[1].x, vertices[1].y);  // Draw a line to the bottom-left vertex
+      pen.lineTo(vertices[2].x, vertices[2].y);  // Draw a line to the bottom-right vertex
+      pen.closePath();  // Close the path
+  
+      // Fill the triangle with the gradient
+      pen.fillStyle = gradient;
+      pen.fill();
+};
 
-    const cellSize = 100 / magnification;
-
-    pen.beginPath();
-    for(let x = 0; x < canvas.width; x += cellSize){
-        pen.moveTo(x + panX, 0 + panY);
-        pen.lineTo(x + panX, canvas.height + panY);
-    }
-    for(let y = 0; y < canvas.height; y += cellSize){
-        pen.moveTo(0 + panX, y + panY);
-        pen.lineTo(canvas.width + panX, y + panY);
-    }
-    pen.stroke();
-}
-
-let magnification = 1;
-
-canvas.onwheel = e => {
-    const delta = Math.sign(e.deltaY);
-    console.log(e.deltaY);
-    magnification += delta * 0.1;
-    drawGrid(magnification);
-}
-
-let panX = 0;
-let panY = 0;
-let isPanning = false;
-
-let panStartX = 0;
-let panStartY = 0;
-
-canvas.onmousedown = e => {
-    isPanning = true;
-    panStartX = e.clientX;
-    panStartY = e.clientY;
-}
-
-canvas.onmousemove = e => {
-    if (isPanning){
-        const deltaX = e.clientX - panStartX;
-        const deltaY = e.clientY - panStartY;
-        panStartX = e.clientX;
-        panStartY = e.clientY;
-        panX += deltaX;
-        panY += deltaY;
-        drawGrid(magnification);
-    }
-}
-
-canvas.onmouseup = e => {
-    isPanning = false;
-}
-
-window.onresize = e => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    drawGrid(magnification);
-}
-
-drawGrid(1);
+drawTriangle();
